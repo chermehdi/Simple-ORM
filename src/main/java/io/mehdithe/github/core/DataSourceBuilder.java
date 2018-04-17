@@ -43,13 +43,22 @@ public class DataSourceBuilder {
 
   public DataSource build() {
     validateDataSource();
+    setDefaultValues();
     return dataSource;
+  }
+
+  private void setDefaultValues() {
+    if (dataSource.port == 0) {
+      dataSource.port = 3306; // suppose it's mysql
+    }
+    if (dataSource.host == null) {
+      dataSource.host = "localhost";
+    }
   }
 
   private void validateDataSource() {
     Objects.requireNonNull(dataSource.driver);
     Objects.requireNonNull(dataSource.bridge);
-    Objects.requireNonNull(dataSource.host);
     Objects.requireNonNull(dataSource.source);
   }
 

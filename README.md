@@ -31,7 +31,7 @@ DataSource source = new DataSourceBuilder("com.mysql.jdbc.Driver", "jdbc:mysql:"
 and you just inject it to the `PersistenceProvider` like 
 
 ```java
-PersistenceProvider provider = new DefaultPersistenceProvider(source);
+PersistenceHandler provider = new DefaultPersistenceHandler(source);
 ```
 
 now u just use the provider to query your database .
