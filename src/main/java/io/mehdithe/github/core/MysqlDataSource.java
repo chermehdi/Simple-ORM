@@ -6,6 +6,8 @@ public class MysqlDataSource extends DataSource {
 
   public static final String MYSQL_BRIDGE = "jdbc:mysql:";
 
+  MysqlDataSource() {}
+
   public MysqlDataSource(String username, String password, String source, String driver,
       String bridge, String host) {
     super(username, password, source, MYSQL_DRIVER, MYSQL_BRIDGE, host);

@@ -113,4 +113,17 @@ abstract public class DataSource {
   abstract public String startDelimiter();
 
   abstract public String endDelimiter();
+
+  @Override
+  public String toString() {
+    return "DataSource{" +
+        "username='" + username + '\'' +
+        ", password='" + password + '\'' +
+        ", source='" + source + '\'' +
+        ", driver='" + driver + '\'' +
+        ", bridge='" + bridge + '\'' +
+        ", host='" + host + '\'' +
+        ", port=" + port +
+        '}';
+  }
 }
