@@ -10,7 +10,9 @@ import io.mehdithe.github.core.DataSourceBuilder;
 import io.mehdithe.github.core.PersistenceHandler;
 import io.mehdithe.github.core.models.Author;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * @author mehdithe
@@ -21,10 +23,13 @@ public class DefaultPersistenceHandlerTest {
 
   private PersistenceHandler handler;
 
+  @Rule
+  public ExpectedException expectedException = ExpectedException.none();
+
   @Before
   public void init() {
     dataSource = new DataSourceBuilder("com.mysql.jdbc.Driver", "jdbc:mysql:")
-        .source("Biblio")
+        .source("simple-orm-test")
         .host("localhost")
         .username("root")
         .password("root")
@@ -35,9 +40,9 @@ public class DefaultPersistenceHandlerTest {
 
   @Test
   public void find() {
-    Author author = handler.find(10L, Author.class);
+    Author author = handler.find(1L, Author.class);
     assertNotNull(author);
-    assertEquals(author.getId(), 10);
+    assertEquals(author.getId(), 1);
   }
 
   @Test
@@ -52,9 +57,28 @@ public class DefaultPersistenceHandlerTest {
 
   @Test
   public void update() {
+    Author author = handler.find(1L, Author.class);
+    author.setName(author.getName() + "-new");
+    System.out.println("author is " + author);
+    handler.update(author);
+    assertNotNull(author);
+    assertTrue(author.getName().endsWith("-new"));
+  }
+
+  @Test
+  public void testUpdateThrowsRuntimeException() {
+    expectedException.expect(RuntimeException.class);
+    Author author = new Author();
+    author.setYearBorn(123);
+    handler.update(author);
   }
 
   @Test
   public void delete() {
+    Author author = handler.find(1L, Author.class);
+    assertNotNull(author);
+    handler.delete(author);
+    expectedException.expect(RuntimeException.class);
+    handler.delete(author);
   }
 }

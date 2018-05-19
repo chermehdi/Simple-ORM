@@ -27,6 +27,12 @@ public class AnnotationProcessor {
   public AnnotationProcessor() {
   }
 
+  public static <T> AnnotationProcessor from(Class<T> clazz) {
+    AnnotationProcessor processor = new AnnotationProcessor();
+    processor.setClazz(clazz);
+    return processor;
+  }
+
   public String getTableName() {
     String tableName = clazz.getSimpleName();
     if (clazz.isAnnotationPresent(Table.class)) {
@@ -46,6 +52,10 @@ public class AnnotationProcessor {
   }
 
   public String getIdName() {
+    return getIdName(clazz);
+  }
+
+  public String getIdName(Class<?> clazz) {
     Field[] fields = clazz.getDeclaredFields();
     String idName = null;
     int idCount = 0;
@@ -103,10 +113,14 @@ public class AnnotationProcessor {
   }
 
   private Object getFieldValue(Field field) {
+    return getFieldValue(field, object);
+  }
+
+  private Object getFieldValue(Field field, Object target) {
     boolean visibility = field.isAccessible();
     try {
       field.setAccessible(true);
-      Object ret = field.get(object);
+      Object ret = field.get(target);
       if (ret == null) {
         ret = getDefaultValue(ret);
       }
@@ -174,7 +188,7 @@ public class AnnotationProcessor {
     return cor;
   }
 
-  public Long getId() {
+  public Long getIdValue() {
     if (object == null) {
       throw new RuntimeException("cannot get Id on null object");
     }
@@ -182,6 +196,21 @@ public class AnnotationProcessor {
     try {
       Field field = clazz.getDeclaredField(idName);
       Object value = getFieldValue(field);
+      return (Long) value;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return 0L;
+  }
+
+  public Long getIdValue(Object object) {
+    if (object == null) {
+      throw new RuntimeException("cannot get Id on null object");
+    }
+    String idName = getIdName(object.getClass());
+    try {
+      Field field = object.getClass().getDeclaredField(idName);
+      Object value = getFieldValue(field, object);
       return (Long) value;
     } catch (Exception e) {
       e.printStackTrace();

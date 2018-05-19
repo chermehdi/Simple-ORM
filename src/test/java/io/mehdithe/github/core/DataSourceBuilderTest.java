@@ -12,7 +12,7 @@ public class DataSourceBuilderTest {
   @Test
   public void build() {
     DataSource source = new DataSourceBuilder("com.mysql.jdbc.Driver", "jdbc:mysql:")
-        .source("Library")
+        .source("simple-orm-test")
         .host("localhost")
         .username("root")
         .password("root")

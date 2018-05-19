@@ -1,11 +1,12 @@
 package io.mehdithe.github.core;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author mehdithe
  */
 public interface PersistenceHandler {
-
-  Object find(Long id);
 
   <T> T find(Long id, Class<T> clazz);
 
@@ -14,4 +15,7 @@ public interface PersistenceHandler {
   Object update(Object object);
 
   Object delete(Object object);
+
+  Collection<Object> saveAll(Iterable<Object> objects);
+
 }

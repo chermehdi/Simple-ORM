@@ -45,6 +45,7 @@ public class Tuple {
     return "`" + s.toString() + "`";
   }
 
+
   private String escapeValues(Object s) {
     if (s instanceof Integer || s instanceof Long || s instanceof Double) {
       return s + "";
